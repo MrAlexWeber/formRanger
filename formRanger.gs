@@ -3,9 +3,31 @@
 // See restrictions at http://www.opensource.org/licenses/gpl-3.0.html
 // Support and contact at http://www.youpd.org/formranger
 
+var scriptTitle = "formRanger Script V1.0.6 (2/4/14)";
 var scriptName = "formRanger"
 var scriptTrackingId = "UA-40688501-1"
 var FORMRANGERIMAGEID = "0B2vrNcqyzernTzhZT0JZYTVFTWc";
+
+function formRanger_preconfig() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ssId = ss.getId();
+  ScriptProperties.setProperty('ssId', ssId);
+  // if you are interested in sharing your complete workflow system for others to copy (with script settings)
+  // Select the "Generate preconfig()" option in the menu and
+  //#######Paste preconfiguration code below before sharing your system for copy#######
+ 
+  
+
+  //#######End preconfiguration code#######
+  ScriptProperties.setProperty('preconfigStatus', 'true');
+  onOpen();
+  //Fetch institutional tracking code.  If it exists, launch initialize function (autolaunch step 1 for repeat users)
+  //If it doesn't exist, the checkInstitutionalTrackingCode() will launch the tracking settings UI.
+  var institutionalTrackingString = NVSL.checkInstitutionalTrackingCode();
+  if (institutionalTrackingString) {
+    autoCrat_initialize();
+  }
+}
 
 function onInstall() {
   onOpen();
@@ -30,6 +52,7 @@ function onOpen() {
 }
 
 function formRangerUi() {
+  setSid();
   var allowedTypes = ["MULTIPLE_CHOICE","LIST","CHECKBOX"];
   var properties = ScriptProperties.getProperties();
   if (properties.questionRanges) {
